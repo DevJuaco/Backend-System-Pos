@@ -1,4 +1,10 @@
 package com.pos.system.persistence.repository;
 
-public interface GroupRepository {
+import com.pos.system.persistence.entity.GroupEntity;
+import org.springframework.data.repository.ListCrudRepository;
+
+import java.util.List;
+
+public interface GroupRepository extends ListCrudRepository<GroupEntity, Integer> {
+    List<GroupEntity> findAllByOrderByIdGroupAsc();
 }
