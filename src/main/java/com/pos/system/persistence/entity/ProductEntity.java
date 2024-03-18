@@ -1,5 +1,6 @@
 package com.pos.system.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,9 @@ public class ProductEntity {
     @Column(name = "id_product", nullable = false)
     private Integer idProduct;
 
+    @Column(name = "category_id", nullable = false)
+    private Integer idCategory;
+
     @Column(nullable = false, length = 30, unique = true)
     private String name;
 
@@ -28,4 +32,9 @@ public class ProductEntity {
 
     @Column(length = 160)
     private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id", referencedColumnName = "category_id", insertable = false, updatable = false)
+    @JsonIgnore
+    private CategoryEntity category;
 }

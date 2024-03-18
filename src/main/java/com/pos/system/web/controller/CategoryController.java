@@ -3,6 +3,7 @@ package com.pos.system.web.controller;
 import com.pos.system.persistence.entity.CategoryEntity;
 import com.pos.system.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,33 +21,52 @@ public class CategoryController {
 
     @GetMapping
     public ResponseEntity<List<CategoryEntity>> getAll () {
-        return ResponseEntity.ok(this.categoryService.getAll());
+        try {
+            return ResponseEntity.ok(this.categoryService.getAll());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PostMapping
     public ResponseEntity<CategoryEntity> create (@RequestBody CategoryEntity category) {
-        if(category.getIdCategory() == null || !this.categoryService.exists(category.getIdCategory())) {
-            return ResponseEntity.ok(this.categoryService.save(category));
-        }
+        try {
+            if(category.getIdCategory() == null || !this.categoryService.exists(category.getIdCategory())) {
+                return ResponseEntity.ok(this.categoryService.save(category));
+            }
 
-        return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PutMapping
     public ResponseEntity<CategoryEntity> update (@RequestBody CategoryEntity category) {
-        if(category.getIdCategory() != null && this.categoryService.exists(category.getIdCategory())) {
-            return ResponseEntity.ok(this.categoryService.save(category));
-        }
+        try {
+            if(category.getIdCategory() != null && this.categoryService.exists(category.getIdCategory())) {
+                return ResponseEntity.ok(this.categoryService.save(category));
+            }
 
-        return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     public ResponseEntity<Void> delete (@PathVariable int idCategory) {
-        if(this.categoryService.exists(idCategory)) {
-            this.categoryService.delete(idCategory);
-            return ResponseEntity.ok().build();
+        try {
+            if(this.categoryService.exists(idCategory)) {
+                this.categoryService.delete(idCategory);
+                return ResponseEntity.ok().build();
+            }
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-
-        return ResponseEntity.badRequest().build();
     }
 }

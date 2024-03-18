@@ -1,9 +1,12 @@
 package com.pos.system.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Table(name = "categories")
@@ -22,4 +25,7 @@ public class CategoryEntity {
 
     @Column(nullable = false)
     private Boolean available;
+
+    @OneToMany(mappedBy = "category")
+    private List<ProductEntity> products;
 }
