@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name= "products")
 @Getter
@@ -20,6 +22,9 @@ public class ProductEntity {
 
     @Column(name = "category_id", nullable = false)
     private Integer idCategory;
+
+    @Column(name = "group_id", nullable = false)
+    private Integer idGroup;
 
     @Column(nullable = false, length = 30, unique = true)
     private String name;
@@ -37,4 +42,12 @@ public class ProductEntity {
     @JoinColumn(name = "category_id", referencedColumnName = "category_id", insertable = false, updatable = false)
     @JsonIgnore
     private CategoryEntity category;
+
+    @ManyToOne
+    @JoinColumn(name = "group_id", referencedColumnName = "group_id", insertable = false, updatable = false)
+    @JsonIgnore
+    private GroupEntity group;
+
+    @OneToMany(mappedBy = "product")
+    private List<TaxEntity> taxes;
 }

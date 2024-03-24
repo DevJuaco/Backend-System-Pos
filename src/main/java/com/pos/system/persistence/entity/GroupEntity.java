@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name = "groups")
 @Getter
@@ -14,7 +16,7 @@ public class GroupEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_group", nullable = false)
+    @Column(name = "group_id", nullable = false)
     private Integer idGroup;
 
     @Column(nullable = false, length = 35)
@@ -22,4 +24,8 @@ public class GroupEntity {
 
     @Column(nullable = false)
     private Boolean available;
+
+    @OneToMany(mappedBy = "group")
+    private List<ProductEntity> products;
+
 }
